@@ -29,7 +29,7 @@ public class CombinePcapInputFormat extends CombineFileInputFormat<LongWritable,
 	 * beginning to the end.
 	 * @see http://wiki.wireshark.org/Development/LibpcapFileFormat
 	 */
-	@Override
+
 	protected boolean isSplitable(FileSystem fs, Path filename) {
 		return false;
 	}

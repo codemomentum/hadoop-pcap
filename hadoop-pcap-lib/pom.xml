@@ -10,6 +10,10 @@
 		<relativePath>..</relativePath>
 	</parent>
 
+	<properties>
+		<hadoop.version>2.0.0-cdh4.0.0</hadoop.version>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.dnsjava</groupId>
@@ -22,12 +26,24 @@
 			<version>3.1</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.apache.hadoop</groupId>
-			<artifactId>hadoop-core</artifactId>
-			<version>1.1.1</version>
-			<scope>provided</scope>
-		</dependency>
+            <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-common</artifactId>
+                <version>${hadoop.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-client</artifactId>
+                <version>${hadoop.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-hdfs</artifactId>
+                <version>${hadoop.version}</version>
+                <scope>provided</scope>
+            </dependency>
 
 		<dependency>
 			<groupId>commons-logging</groupId>
