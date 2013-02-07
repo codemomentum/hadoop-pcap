@@ -38,3 +38,8 @@ See: https://github.com/RIPE-NCC/hadoop-pcap/tree/master/hadoop-pcap-lib
 
 Implements a Hive Serializer/Deserializer (SerDe) to query PCAPs using SQL like commands.  
 See: https://github.com/RIPE-NCC/hadoop-pcap/tree/master/hadoop-pcap-serde
+
+
+### Fork Note
+patched the code slightly to get rid of the old mapred api usage
+should work on cdh4x without a problem now

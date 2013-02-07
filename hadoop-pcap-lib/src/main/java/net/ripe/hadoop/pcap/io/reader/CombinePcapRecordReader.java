@@ -1,58 +1,59 @@
 package net.ripe.hadoop.pcap.io.reader;
 
-import java.io.IOException;
-
 import net.ripe.hadoop.pcap.io.PcapInputFormat;
-
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.ObjectWritable;
-import org.apache.hadoop.mapred.RecordReader;
-import org.apache.hadoop.mapred.Reporter;
-import org.apache.hadoop.mapred.lib.CombineFileSplit;
+import org.apache.hadoop.mapreduce.InputSplit;
+import org.apache.hadoop.mapreduce.RecordReader;
+import org.apache.hadoop.mapreduce.TaskAttemptContext;
+import org.apache.hadoop.mapreduce.lib.input.CombineFileSplit;
 
-/**
- * Wrapper for CombineFileSplit to RecordReader
- * @author wnagele
- */
-public class CombinePcapRecordReader implements RecordReader<LongWritable, ObjectWritable> {
-	private PcapRecordReader recordReader;
+import java.io.IOException;
 
-	public CombinePcapRecordReader(CombineFileSplit split, Configuration conf, Reporter reporter, Integer index) throws IOException {
-		Path path = split.getPath(index);
-		long start = 0L;
-		long length = split.getLength(index);
-		recordReader = PcapInputFormat.initPcapRecordReader(path, start, length, reporter, conf);
-	}
 
-	@Override
-	public boolean next(LongWritable key, ObjectWritable value) throws IOException {
-		return recordReader.next(key, value);
-	}
+public class CombinePcapRecordReader extends RecordReader<LongWritable, ObjectWritable> {
 
-	@Override
-	public LongWritable createKey() {
-		return recordReader.createKey();
-	}
+    private PcapRecordReader recordReader;
 
-	@Override
-	public ObjectWritable createValue() {
-		return recordReader.createValue();
-	}
+    public CombinePcapRecordReader(CombineFileSplit split,TaskAttemptContext context,Integer index) throws IOException {
+        Path path = split.getPath(index);
+        long start = 0L;
+        long length = split.getLength(index);
+        recordReader = PcapInputFormat.initPcapRecordReader(path, start, length, context.getConfiguration());
+    }
 
-	@Override
-	public long getPos() throws IOException {
-		return recordReader.getPos();
-	}
+    @Override
+    public void close() throws IOException {
+        recordReader.close();
+    }
 
-	@Override
-	public void close() throws IOException {
-		recordReader.close();
-	}
+    @Override
+    public void initialize(InputSplit split, TaskAttemptContext context) throws IOException, InterruptedException {
+    }
 
-	@Override
-	public float getProgress() throws IOException {
-		return recordReader.getProgress();
-	}
+    @Override
+    public boolean nextKeyValue() throws IOException, InterruptedException {
+        return recordReader.nextKeyValue();
+    }
+
+    @Override
+    public LongWritable getCurrentKey() throws IOException, InterruptedException {
+        return recordReader.getCurrentKey();
+    }
+
+    @Override
+    public ObjectWritable getCurrentValue() throws IOException, InterruptedException {
+        return recordReader.getCurrentValue();
+    }
+
+    @Override
+    public float getProgress() throws IOException, InterruptedException {
+        return recordReader.getProgress();
+    }
+
+    public long getPos() throws IOException {
+        return recordReader.getPos();
+    }
 }
